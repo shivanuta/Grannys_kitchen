@@ -1,7 +1,15 @@
+using GrannysKitchen.Models.Data;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
+
+var connectionString = builder.Configuration.GetConnectionString("GrannysKitchen_APPContext");
+builder.Services.AddDbContext<GrannysKitchenDbContext>(x => x.UseSqlServer(connectionString));
+
 
 var app = builder.Build();
 

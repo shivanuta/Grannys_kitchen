@@ -5,9 +5,14 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrannysKitchen.API", "GrannysKitchen.API\GrannysKitchen.API.csproj", "{501DDF67-D79A-4D04-8A6C-AA2E3D9284E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrannysKitchen.WebApp", "GrannysKitchen.WebApp\GrannysKitchen.WebApp.csproj", "{9AD43485-3DD5-4790-B67D-96B17AA79426}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrannysKitchen.WebApp", "GrannysKitchen.WebApp\GrannysKitchen.WebApp.csproj", "{9AD43485-3DD5-4790-B67D-96B17AA79426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrannysKitchen.Models", "GrannysKitchen.Models\GrannysKitchen.Models.csproj", "{F8A95B1B-5BE4-4205-975A-E26D87422483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrannysKitchen.Models", "GrannysKitchen.Models\GrannysKitchen.Models.csproj", "{F8A95B1B-5BE4-4205-975A-E26D87422483}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ABA8F66B-09E3-47C3-ADE5-C3B849F4BD81}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 @{
     var Token = @Context.Session.GetString("Token");
 }
-<ul class="nav navbar-nav navbar-right">
+<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
     @if (!string.IsNullOrEmpty(Token))
     {
         <li class="nav-item" style="align-self: center;">
@@ -19,9 +19,14 @@
     }
     else
     {
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Chef Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Chef Login</a></li>
+        <li><a class="nav-link" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li>
+            <a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+        </li>
+        <li><a class="nav-link" href="#"><span class="glyphicon glyphicon-user"></span> Chef Sign Up</a></li>
+        <li>
+            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index"><span class="glyphicon glyphicon-log-in"></span> Chef Login</a>
+        </li>
     }
 </ul>
+

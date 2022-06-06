@@ -19,14 +19,19 @@
     }
     else
     {
-        <li><a class="nav-link" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
         <li>
             <a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a>
         </li>
-        <li><a class="nav-link" href="#"><span class="glyphicon glyphicon-user"></span> Chef Sign Up</a></li>
+        
         <li>
             <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index"><span class="glyphicon glyphicon-log-in"></span> Chef Login</a>
         </li>
+
+        <li>
+            <a class="nav-link" asp-controller="Account" asp-action="Registration"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+        </li>
     }
 </ul>
+
+
 

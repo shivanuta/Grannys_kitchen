@@ -1,50 +1,72 @@
-<div class="container h-100">
-    <div class="d-flex justify-content-center h-100">
-        <div class="user_card">
-            <div class="d-flex justify-content-center">
-                <div class="brand_logo_container">
-                    <img src="~/images/Grannys-Kitchen-logo.png" class="brand_logo" alt="Logo">
-                </div>
-            </div>
-            <div class="d-flex justify-content-center form_container">
-                <form>
-                    
-                    <div class="d-flex justify-content-center mt-1 login_container">
-                        <h5>Chef Login</h5>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                        <input type="text" name="" class="form-control input_user" value="" placeholder="username">
-                    </div>
-                    <div class="input-group mb-2">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        <input type="password" name="" class="form-control input_pass" value="" placeholder="password">
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customControlInline">
-                            <label class="custom-control-label" for="customControlInline">Remember me</label>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3 login_container">
-                        <button type="button" name="button" class="btn login_btn">Login</button>
-                    </div>
-                </form>
-            </div>
+using GranysKitchen.Models.RequestModels;
+using GranysKitchen.Models.ResponseModels;
+using GranysKitchen.WebApp.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
 
-            <div class="mt-4">
-                <div class="d-flex justify-content-center links">
-                    Don't have an account? <a href="#" class="ml-2">Sign Up</a>
-                </div>
-                <div class="d-flex justify-content-center links">
-                    <a href="#">Forgot your password?</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<link rel="stylesheet" href="~/css/login.css" />
+namespace GranysKitchen.WebApp.Controllers
+{
+    [Authorize]
+    public class AccountController : Controller
+    {
+        private readonly ILogger<AccountController> _logger;
+        private readonly IConfiguration _Configure;
+        private static string apiBaseUrl;
+
+        public AccountController(ILogger<AccountController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _Configure = configuration;
+
+            apiBaseUrl = _Configure.GetValue<string>("WebAPIBaseUrl");
+        }
+
+        //Chef Login View
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ChefRegistration(RegisterRequest user)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                string endpoint = apiBaseUrl + "Account/ChefRegistration";
+
+                using (var Response = await client.PostAsync(endpoint, content))
+                {
+                    var apiResponse = await Response.Content.ReadAsStringAsync();
+                    var responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(apiResponse);
+
+                    if (responseMessage != null && responseMessage.IsSuccess && Response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        ModelState.Clear();
+                        TempData["Message"] = responseMessage.SuccessMessage;
+                        return RedirectToAction("ChefRegistration");
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
+                        return View("ChefRegistration");
+                    }
+                }
+            }
+        }
+
+
+    }
+}

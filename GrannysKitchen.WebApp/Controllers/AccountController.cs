@@ -1,11 +1,12 @@
-using GranysKitchen.Models.RequestModels;
-using GranysKitchen.Models.ResponseModels;
-using GranysKitchen.WebApp.Authorization;
+
+using GrannysKitchen.Models.RequestModels;
+using GrannysKitchen.Models.ResponseModels;
+using GrannysKitchen.WebApp.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace GranysKitchen.WebApp.Controllers
+namespace GrannysKitchen.WebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -80,7 +81,7 @@ namespace GranysKitchen.WebApp.Controllers
                 using (var Response = await client.PostAsync(endpoint, content))
                 {
                     var apiResponse = await Response.Content.ReadAsStringAsync();
-                    var authenticateResponse = JsonConvert.DeserializeObject<ChefAuthenticateResponse>(apiResponse);
+                    var authenticateResponse = JsonConvert.DeserializeObject<AuthenticateResponse>(apiResponse);
 
                     if (authenticateResponse != null && authenticateResponse.ResponseMesssage.StatusCode == System.Net.HttpStatusCode.OK)
                     {

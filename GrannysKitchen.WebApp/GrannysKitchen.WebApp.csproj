@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GranysKitchen.Models\GranysKitchen.Models.csproj" />
+    <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
+    <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
   </ItemGroup>
 
 </Project>

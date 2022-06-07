@@ -1,11 +1,12 @@
-using GranysKitchen.Models.RequestModels;
-using GranysKitchen.Models.ResponseModels;
-using GranysKitchen.WebApp.Authorization;
+using GrannysKitchen.API.Authorization;
+using GrannysKitchen.Models.RequestModels;
+using GrannysKitchen.Models.ResponseModels;
+using GrannysKitchen.WebApp.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace GranysKitchen.WebApp.Controllers
+namespace GrannysKitchen.WebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller

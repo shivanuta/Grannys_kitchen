@@ -1,0 +1,159 @@
+﻿@model GrannysKitchen.Models.RequestModels.RegisterRequest;
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="~/css/adminRegistration.css" />
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <h3>Welcome</h3>
+            <h6>To</h6>
+            <h6>Granny's Kitchen</h6>
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Chef</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">User</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <form asp-route-returnUrl="" method="post" asp-action="ChefRegistration">
+                        <h3 class="register-heading">Register as a Chef</h3>
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="FirstName" placeholder="First Name *" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="LastName" placeholder="Last Name *" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input asp-for="Password" placeholder="Password *" class="form-control" type="password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="ConfirmPassword" placeholder="Confirm Password *" class="form-control" type="password" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="ZipCode" class="form-control" minlength="6" maxlength="6" placeholder="Your Zipcode *" />
+                                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="Username" placeholder="Username *" class="form-control" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Email" placeholder="Your Email *" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="MobileNo" class="form-control" minlength="10" maxlength="10" placeholder="Your Phone *" />
+                                    <span asp-validation-for="MobileNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Address" class="form-control" placeholder="Your Adress *" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                
+                                <input type="submit" class="btnRegister" value="Register" />
+                            </div>
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <form asp-route-returnUrl="" method="post" asp-action="UserRegistration">
+                        <h3 class="register-heading">Register as a User to book food Items</h3>
+                        <div class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="FirstName" placeholder="First Name *" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="LastName" placeholder="Last Name *" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input asp-for="Password" placeholder="Password *" class="form-control" type="password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="ConfirmPassword" placeholder="Confirm Password *" class="form-control" type="password" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="ZipCode" class="form-control" minlength="6" maxlength="6" placeholder="Your Zipcode *" />
+                                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group">
+                                    <div class="maxl">
+                                    <label class="radio inline">
+                                    <input type="radio" name="gender" value="male" checked>
+                                    <span> Male </span>
+                                    </label>
+                                    <label class="radio inline">
+                                    <input type="radio" name="gender" value="female">
+                                    <span>Female </span>
+                                    </label>
+                                    </div>
+                                    </div>*@
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="Username" placeholder="Username *" class="form-control" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Email" placeholder="Your Email *" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="MobileNo" class="form-control" minlength="10" maxlength="10" placeholder="Your Phone *" />
+                                    <span asp-validation-for="MobileNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Address" class="form-control" placeholder="Your Adress *" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group">
+                                    <select class="form-control">
+                                    <option class="hidden" selected disabled>Please select your Sequrity Question</option>
+                                    <option>What is your Birthdate?</option>
+                                    <option>What is Your old Phone Number</option>
+                                    <option>What is your Pet Name?</option>
+                                    </select>
+                                    </div>
+                                    <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
+                                    </div>*@
+                                <input type="submit" class="btnRegister" value="Register" />
+                            </div>
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

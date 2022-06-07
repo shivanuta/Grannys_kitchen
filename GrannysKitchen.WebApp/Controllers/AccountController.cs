@@ -1,4 +1,4 @@
-using GrannysKitchen.API.Authorization;
+
 using GrannysKitchen.Models.RequestModels;
 using GrannysKitchen.Models.ResponseModels;
 using GrannysKitchen.WebApp.Authorization;
@@ -81,7 +81,7 @@ namespace GrannysKitchen.WebApp.Controllers
                 using (var Response = await client.PostAsync(endpoint, content))
                 {
                     var apiResponse = await Response.Content.ReadAsStringAsync();
-                    var authenticateResponse = JsonConvert.DeserializeObject<ChefAuthenticateResponse>(apiResponse);
+                    var authenticateResponse = JsonConvert.DeserializeObject<AuthenticateResponse>(apiResponse);
 
                     if (authenticateResponse != null && authenticateResponse.ResponseMesssage.StatusCode == System.Net.HttpStatusCode.OK)
                     {

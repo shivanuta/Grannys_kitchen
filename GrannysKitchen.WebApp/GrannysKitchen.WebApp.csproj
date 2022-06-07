@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GrannysKitchen.API\GrannysKitchen.API.csproj" />
-    <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
+    <ProjectReference Include="..\GranysKitchen.Models\GranysKitchen.Models.csproj" />
   </ItemGroup>
 
 </Project>

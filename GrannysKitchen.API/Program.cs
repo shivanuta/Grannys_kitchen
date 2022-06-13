@@ -1,4 +1,3 @@
-
 using GrannysKitchen.API.Authorization;
 using GrannysKitchen.API.Helpers;
 using GrannysKitchen.API.Services;
@@ -31,7 +30,6 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +42,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// custom jwt auth middleware
+app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
 

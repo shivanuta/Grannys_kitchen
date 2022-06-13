@@ -5,6 +5,7 @@ using GrannysKitchen.Models.DBModels;
 using GrannysKitchen.Models.RequestModels;
 using GrannysKitchen.Models.ResponseModels;
 using Org.BouncyCastle.Crypto.Generators;
+using System.Net;
 
 namespace GrannysKitchen.API.Services
 {
@@ -13,6 +14,7 @@ namespace GrannysKitchen.API.Services
         Users GetById(int id);
         ChefUsers GetChefUserById(int id);
         ApiResponseMessage ChefRegistration(RegisterRequest model);
+        ChefAuthenticateResponse ChefAuthenticate(AuthenticateRequest model);
     }
     public class UserService : IUserService
     {
@@ -74,6 +76,25 @@ namespace GrannysKitchen.API.Services
             _context.SaveChanges();
             response.SuccessMessage = "Registration successful";
             response.IsSuccess = true;
+            return response;
+        }
+        public ChefAuthenticateResponse ChefAuthenticate(AuthenticateRequest model)
+        {
+            var user = _context.ChefUsers.Where(x => x.IsActive == true).SingleOrDefault(x => x.Username == model.Username);
+            // validate
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            {
+                var authenticateResponse = new ChefAuthenticateResponse()
+                {
+                    ErrorMessage = "Username or password is incorrect",
+                    ResponseMesssage = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                };
+                return authenticateResponse;
+            }
+            // authentication successful
+            var response = _mapper.Map<ChefAuthenticateResponse>(user);
+            response.Token = _jwtUtils.GenerateToken(user);
+            response.ResponseMesssage = new HttpResponseMessage(HttpStatusCode.OK);
             return response;
         }
     }

@@ -2,6 +2,9 @@
 using GrannysKitchen.API.Authorization;
 using GrannysKitchen.Models.Data;
 using GrannysKitchen.Models.DBModels;
+using GrannysKitchen.Models.RequestModels;
+using GrannysKitchen.Models.ResponseModels;
+using Org.BouncyCastle.Crypto.Generators;
 
 namespace GrannysKitchen.API.Services
 {
@@ -9,6 +12,7 @@ namespace GrannysKitchen.API.Services
     {
         Users GetById(int id);
         ChefUsers GetChefUserById(int id);
+        ApiResponseMessage ChefRegistration(RegisterRequest model);
     }
     public class UserService : IUserService
     {
@@ -46,6 +50,31 @@ namespace GrannysKitchen.API.Services
             var user = _context.ChefUsers.Find(id);
             if (user == null) throw new KeyNotFoundException("User not found");
             return user;
+        }
+
+        public ApiResponseMessage ChefRegistration(RegisterRequest model)
+        {
+            ApiResponseMessage response = new ApiResponseMessage();
+            // validate
+            if (_context.Users.Any(x => x.Username == model.Username))
+            {
+                response.ErrorMessage = "Username '" + model.Username + "' is already taken";
+                response.IsSuccess = false;
+                return response;
+            }
+
+            // map model to new user object
+            var user = _mapper.Map<ChefUsers>(model);
+
+            // hash password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            // save user
+            _context.ChefUsers.Add(user);
+            _context.SaveChanges();
+            response.SuccessMessage = "Registration successful";
+            response.IsSuccess = true;
+            return response;
         }
     }
 }

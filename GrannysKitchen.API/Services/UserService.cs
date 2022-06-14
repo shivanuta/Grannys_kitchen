@@ -15,6 +15,7 @@ namespace GrannysKitchen.API.Services
         ChefUsers GetChefUserById(int id);
         ApiResponseMessage ChefRegistration(RegisterRequest model);
         ChefAuthenticateResponse ChefAuthenticate(AuthenticateRequest model);
+        ApiResponseMessage UserRegistration(RegisterRequest model);
     }
     public class UserService : IUserService
     {
@@ -58,7 +59,7 @@ namespace GrannysKitchen.API.Services
         {
             ApiResponseMessage response = new ApiResponseMessage();
             // validate
-            if (_context.Users.Any(x => x.Username == model.Username))
+            if (_context.ChefUsers.Any(x => x.Username == model.Username))
             {
                 response.ErrorMessage = "Username '" + model.Username + "' is already taken";
                 response.IsSuccess = false;
@@ -95,6 +96,27 @@ namespace GrannysKitchen.API.Services
             var response = _mapper.Map<ChefAuthenticateResponse>(user);
             response.Token = _jwtUtils.GenerateToken(user);
             response.ResponseMesssage = new HttpResponseMessage(HttpStatusCode.OK);
+            return response;
+        }
+        public ApiResponseMessage UserRegistration(RegisterRequest model)
+        {
+            ApiResponseMessage response = new ApiResponseMessage();
+            // validate
+            if (_context.Users.Any(x => x.Username == model.Username))
+            {
+                response.ErrorMessage = "Username '" + model.Username + "' is already taken";
+                response.IsSuccess = false;
+                return response;
+            }
+            // map model to new user object
+            var user = _mapper.Map<Users>(model);
+            // hash password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            // save user
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            response.SuccessMessage = "Registration successful";
+            response.IsSuccess = true;
             return response;
         }
     }

@@ -11,6 +11,11 @@ namespace GrannysKitchen.Models.DBModels
 {
     public class ChefUsers
     {
+        public ChefUsers()
+        {
+            this.IsActive = true;
+            this.CreatedDate = System.DateTime.UtcNow;
+        }
         [Key]
         public int Id { get; set; }
 

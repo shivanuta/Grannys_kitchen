@@ -4,8 +4,7 @@ using GrannysKitchen.API.Services;
 using GrannysKitchen.Models.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-namespace GrannysKitchen.API.Controllers
+namespace GranysKitchen.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +13,6 @@ namespace GrannysKitchen.API.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
-
         public AccountController(
             IUserService userService,
             IMapper mapper)
@@ -22,7 +20,6 @@ namespace GrannysKitchen.API.Controllers
             _userService = userService;
             _mapper = mapper;
         }
-
         [AllowAnonymous]
         [HttpPost("ChefRegistration")]
         public IActionResult ChefRegistration(RegisterRequest model)
@@ -30,5 +27,20 @@ namespace GrannysKitchen.API.Controllers
             var response = _userService.ChefRegistration(model);
             return Ok(response);
         }
+        [AllowAnonymous]
+        [HttpPost("ChefAuthenticate")]
+        public IActionResult ChefAuthenticate(AuthenticateRequest model)
+        {
+            var response = _userService.ChefAuthenticate(model);
+            return Ok(response);
+        }
+        [AllowAnonymous]
+        [HttpPost("UserRegistration")]
+        public IActionResult UserRegistration(RegisterRequest model)
+        {
+            var response = _userService.UserRegistration(model);
+            return Ok(response);
+        }
     }
 }
+

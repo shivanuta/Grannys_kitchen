@@ -102,7 +102,33 @@ namespace GrannysKitchen.WebApp.Controllers
                 }
             }
         }
-
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> UserRegistration(RegisterRequest user)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                string endpoint = apiBaseUrl + "Account/UserRegistration";
+                using (var Response = await client.PostAsync(endpoint, content))
+                {
+                    var apiResponse = await Response.Content.ReadAsStringAsync();
+                    var responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(apiResponse);
+                    if (responseMessage != null && responseMessage.IsSuccess && Response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        ModelState.Clear();
+                        TempData["Message"] = responseMessage.SuccessMessage;
+                        return RedirectToAction("ChefRegistration");
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
+                        return View("ChefRegistration");
+                    }
+                }
+            }
+        }
         [HttpGet]
         public IActionResult Logout()
         {

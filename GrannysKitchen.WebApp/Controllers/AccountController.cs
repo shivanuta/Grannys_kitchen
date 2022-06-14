@@ -30,6 +30,13 @@ namespace GrannysKitchen.WebApp.Controllers
         {
             return View();
         }
+        //User Login View
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult UserLogin()
+        {
+            return View();
+        }
 
         [AllowAnonymous]
         [HttpGet]
@@ -125,6 +132,37 @@ namespace GrannysKitchen.WebApp.Controllers
                         ModelState.Clear();
                         ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
                         return View("ChefRegistration");
+                    }
+                }
+            }
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> UserLoginCheck(AuthenticateRequest user)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                string endpoint = apiBaseUrl + "Account/UserAuthenticate";
+                using (var Response = await client.PostAsync(endpoint, content))
+                {
+                    var apiResponse = await Response.Content.ReadAsStringAsync();
+                    var authenticateResponse = JsonConvert.DeserializeObject<AuthenticateResponse>(apiResponse);
+                    if (authenticateResponse != null && authenticateResponse.ResponseMesssage.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        HttpContext.Session.SetString("Token", authenticateResponse.Token);
+                        HttpContext.Session.SetInt32("IsChef", 0);
+                        HttpContext.Session.SetString("Username", authenticateResponse.Username);
+                        HttpContext.Session.SetString("Name", authenticateResponse.FirstName + " " + authenticateResponse.LastName);
+                        HttpContext.Session.SetInt32("UserId", authenticateResponse.Id);
+                        TempData["Profile"] = JsonConvert.SerializeObject(apiResponse);
+                        return RedirectToAction("Index", "User");
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        ModelState.AddModelError(string.Empty, "Username or Password is Incorrect");
+                        return View("Index");
                     }
                 }
             }

@@ -41,6 +41,15 @@ namespace GranysKitchen.API.Controllers
             var response = _userService.UserRegistration(model);
             return Ok(response);
         }
+        [AllowAnonymous]
+        [HttpPost("UserAuthenticate")]
+        public IActionResult UserAuthenticate(AuthenticateRequest model)
+        {
+            var response = _userService.UserAuthenticate(model);
+            return Ok(response);
+        }
     }
 }
+      
+
 

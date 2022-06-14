@@ -63,19 +63,17 @@ namespace GrannysKitchen.WebApp.Controllers
                     {
                         ModelState.Clear();
                         TempData["Message"] = responseMessage.SuccessMessage;
-                        return RedirectToAction("ChefRegistration");
+                        return RedirectToAction("Index");
                     }
                     else
                     {
                         ModelState.Clear();
                         ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
-                        return View("ChefRegistration");
+                        return View("Registration");
                     }
                 }
             }
         }
-
-
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> ChefLoginCheck(AuthenticateRequest user)
@@ -125,13 +123,13 @@ namespace GrannysKitchen.WebApp.Controllers
                     {
                         ModelState.Clear();
                         TempData["Message"] = responseMessage.SuccessMessage;
-                        return RedirectToAction("ChefRegistration");
+                        return RedirectToAction("UserLogin");
                     }
                     else
                     {
                         ModelState.Clear();
                         ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
-                        return View("ChefRegistration");
+                        return View("Registration");
                     }
                 }
             }

@@ -1,5 +1,4 @@
 ﻿using GrannysKitchen.Models.DBModels;
-using GrannysKitchen.Models.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
   </ItemGroup>
 

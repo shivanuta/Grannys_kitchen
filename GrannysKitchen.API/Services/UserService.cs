@@ -4,7 +4,6 @@ using GrannysKitchen.Models.Data;
 using GrannysKitchen.Models.DBModels;
 using GrannysKitchen.Models.RequestModels;
 using GrannysKitchen.Models.ResponseModels;
-using Org.BouncyCastle.Crypto.Generators;
 using System.Net;
 
 namespace GrannysKitchen.API.Services
@@ -60,7 +59,7 @@ namespace GrannysKitchen.API.Services
         {
             ApiResponseMessage response = new ApiResponseMessage();
             // validate
-            if (_context.ChefUsers.Any(x => x.Username == model.Username))
+             if (_context.ChefUsers.Any(x => x.Username == model.Username))
             {
                 response.ErrorMessage = "Username '" + model.Username + "' is already taken";
                 response.IsSuccess = false;

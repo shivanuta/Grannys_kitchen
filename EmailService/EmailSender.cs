@@ -14,18 +14,20 @@ namespace EmailService
         {
             _emailConfig = emailConfig;
         }
-        public void SendEmail(Message message)
+        public void SendEmail(Message message, bool isHTML = false)
         {
-            var emailMessage = CreateEmailMessage(message);
+            var emailMessage = CreateEmailMessage(message, isHTML);
             Send(emailMessage);
         }
-        private MimeMessage CreateEmailMessage(Message message)
+        private MimeMessage CreateEmailMessage(Message message, bool isHTML)
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("GrannysKitchen", _emailConfig.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+            emailMessage.Body = (isHTML)
+                                ? new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content }
+                                : new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
             return emailMessage;
         }
         private void Send(MimeMessage mailMessage)

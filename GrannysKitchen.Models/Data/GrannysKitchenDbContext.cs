@@ -26,5 +26,9 @@ namespace GrannysKitchen.Models.Data
 
         public DbSet<Users> Users { get; set; }
         public DbSet<ChefUsers> ChefUsers { get; set; }
+        public DbSet<ResetPasswordTokens> ResetPasswordTokens { get; set; }
     }
 }
+
+
+

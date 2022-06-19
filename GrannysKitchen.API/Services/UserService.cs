@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using EmailService;
 using GrannysKitchen.API.Authorization;
 using GrannysKitchen.Models.Data;
 using GrannysKitchen.Models.DBModels;
 using GrannysKitchen.Models.RequestModels;
 using GrannysKitchen.Models.ResponseModels;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace GrannysKitchen.API.Services
 {
@@ -16,24 +18,26 @@ namespace GrannysKitchen.API.Services
         ApiResponseMessage UserRegistration(RegisterRequest model);
         AuthenticateResponse UserAuthenticate(AuthenticateRequest model);
         AuthenticateResponse ChefAuthenticate(AuthenticateRequest model);
+        void ForgotPassword(ForgotPasswordRequest model, string origin);
     }
     public class UserService : IUserService
     {
         private GrannysKitchenDbContext _context;
         private IJwtUtils _jwtUtils;
         private readonly IMapper _mapper;
+        private IEmailSender _emailSender;
 
         public UserService(
             GrannysKitchenDbContext context,
             IJwtUtils jwtUtils,
-            IMapper mapper)
+            IMapper mapper,
+            IEmailSender emailSender)
         {
             _context = context;
             _jwtUtils = jwtUtils;
             _mapper = mapper;
+            _emailSender = emailSender;
         }
-
-
         public Users GetById(int id)
         {
             return getUser(id);
@@ -137,6 +141,64 @@ namespace GrannysKitchen.API.Services
             response.Token = _jwtUtils.GenerateToken(user);
             response.ResponseMesssage = new HttpResponseMessage(HttpStatusCode.OK);
             return response;
+        }
+        public void ForgotPassword(ForgotPasswordRequest model, string origin)
+        {
+            ChefUsers chefUser = new ChefUsers();
+            Users user = new Users();
+            if (model.IsChefUser)
+            {
+                chefUser = _context.ChefUsers.SingleOrDefault(x => x.Email == model.Email);
+            }
+            else
+            {
+                user = _context.Users.SingleOrDefault(x => x.Email == model.Email);
+            }
+            // always return ok response to prevent email enumeration
+            if (chefUser == null && user == null) return;
+            // create reset token that expires after 1 day
+            var resetToken = generateResetToken();
+            ResetPasswordTokens resetPasswordToken = new ResetPasswordTokens
+            {
+                IsChefUser = model.IsChefUser,
+                IsActive = true,
+                ResetToken = resetToken,
+                UserId = model.IsChefUser ? chefUser.Id : user.Id,
+                EmailId = model.Email,
+                CreatedDate = DateTime.UtcNow,
+                ResetTokenExpires = DateTime.UtcNow.AddHours(6)
+            };
+            _context.ResetPasswordTokens.Add(resetPasswordToken);
+            _context.SaveChanges();
+            //// send email
+            sendPasswordResetEmail(resetPasswordToken, origin);
+        }
+        private string generateResetToken()
+        {
+            // token is a cryptographically strong random sequence of values
+            var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+            // ensure token is unique by checking against db
+            var tokenIsUnique = !_context.ResetPasswordTokens.Any(x => x.ResetToken == token);
+            if (!tokenIsUnique)
+                return generateResetToken();
+            return token;
+        }
+        private void sendPasswordResetEmail(ResetPasswordTokens account, string origin)
+        {
+            string message;
+            if (!string.IsNullOrEmpty(origin))
+            {
+                var resetUrl = $"{origin}/account/resetpassword?token={account.ResetToken}";
+                message = $@"<p>Please click the below link to reset your password, the link will be valid for 6 hours:</p>
+                            <p><a href=""{resetUrl}"">{resetUrl}</a></p>";
+            }
+            else
+            {
+                message = $@"<p>Please use the below token to reset your password with the <code>/accounts/resetpassword</code> api route:</p>
+                            <p><code>{account.ResetToken}</code></p>";
+            }
+            var contentMessage = new Message(new string[] { "nutakki.shivaramakrishna99@gmail.com" }, "Sign-up Verification API - Reset Password", $@"<h4>Reset Password Email</h4>{message}");
+            _emailSender.SendEmail(contentMessage, true);
         }
     }
 }

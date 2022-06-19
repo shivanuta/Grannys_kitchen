@@ -165,6 +165,37 @@ namespace GrannysKitchen.WebApp.Controllers
                 }
             }
         }
+        [AllowAnonymous]
+        [HttpGet("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
+        {
+            return View(forgotPasswordRequest);
+        }
+        [AllowAnonymous]
+        [HttpPost("SendPasswordRestLink")]
+        public async Task<IActionResult> SendPasswordRestLink(ForgotPasswordRequest forgotPasswordRequest)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(forgotPasswordRequest), Encoding.UTF8, "application/json");
+                string endpoint = apiBaseUrl + "Account/ForgotPassword";
+                using (var Response = await client.PostAsync(endpoint, content))
+                {
+                    if (Response.IsSuccessStatusCode)
+                    {
+                        ModelState.Clear();
+                        TempData["PasswordResetSuccessMessage"] = "Please check you email for Password reset link";
+                        return View("ForgotPassword");
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        TempData["ErrorMessage"] = "Please enter valid registered EmailId";
+                        return View("ForgotPassword", forgotPasswordRequest);
+                    }
+                }
+            }
+        }
         [HttpGet]
         public IActionResult Logout()
         {

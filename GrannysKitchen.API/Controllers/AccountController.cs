@@ -5,6 +5,7 @@ using GrannysKitchen.API.Services;
 using GrannysKitchen.Models.RequestModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 namespace GrannysKitchen.API.Controllers
 {
     [Route("api/[controller]")]
@@ -54,12 +55,19 @@ namespace GrannysKitchen.API.Controllers
         }
         [HttpGet("SendTestMail")]
         [AllowAnonymous]
-        public IActionResult SendEmail()
+        public IActionResult SendTestEmail()
         {
             var rng = new Random();
             var message = new Message(new string[] { "nutakki.srk369@gmail.com" }, "Test email", "This is the content from our email.");
             _emailSender.SendEmail(message);
             return Ok("Email Sent");
+        }
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
+        {
+            _userService.ForgotPassword(forgotPasswordRequest, "https://localhost:7113");
+            return Ok();
         }
     }
 }

@@ -121,6 +121,33 @@ namespace GrannysKitchen.Models.Migrations
 
                     b.ToTable("Users");
                 });
+            modelBuilder.Entity("GranysKitchen.Models.DBModels.ResetPasswordTokens", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                b.Property<DateTime?>("CreatedDate")
+                    .HasColumnType("datetime2");
+                b.Property<string>("EmailId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+                b.Property<bool>("IsActive")
+                    .HasColumnType("bit");
+                b.Property<bool>("IsChefUser")
+                    .HasColumnType("bit");
+                b.Property<DateTime?>("ModifiedDate")
+                    .HasColumnType("datetime2");
+                b.Property<string>("ResetToken")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+                b.Property<DateTime>("ResetTokenExpires")
+                    .HasColumnType("datetime2");
+                b.Property<int>("UserId")
+                    .HasColumnType("int");
+                b.HasKey("Id");
+                b.ToTable("ResetPasswordTokens");
+            });
 #pragma warning restore 612, 618
         }
     }

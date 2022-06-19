@@ -69,8 +69,14 @@ namespace GrannysKitchen.API.Controllers
             _userService.ForgotPassword(forgotPasswordRequest, "https://localhost:7113");
             return Ok();
         }
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public IActionResult ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            _userService.ResetPassword(resetPasswordRequest);
+            return Ok();
+        }
     }
-}
-      
+} 
 
 

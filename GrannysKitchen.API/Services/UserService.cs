@@ -5,6 +5,7 @@ using GrannysKitchen.Models.Data;
 using GrannysKitchen.Models.DBModels;
 using GrannysKitchen.Models.RequestModels;
 using GrannysKitchen.Models.ResponseModels;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Cryptography;
 
@@ -19,6 +20,7 @@ namespace GrannysKitchen.API.Services
         AuthenticateResponse UserAuthenticate(AuthenticateRequest model);
         AuthenticateResponse ChefAuthenticate(AuthenticateRequest model);
         void ForgotPassword(ForgotPasswordRequest model, string origin);
+        void ResetPassword(ResetPasswordRequest model);
     }
     public class UserService : IUserService
     {
@@ -69,6 +71,7 @@ namespace GrannysKitchen.API.Services
                 response.IsSuccess = false;
                 return response;
             }
+
 
             // map model to new user object
             var user = _mapper.Map<ChefUsers>(model);
@@ -188,8 +191,8 @@ namespace GrannysKitchen.API.Services
             string message;
             if (!string.IsNullOrEmpty(origin))
             {
-                var resetUrl = $"{origin}/account/resetpassword?token={account.ResetToken}";
-                message = $@"<p>Please click the below link to reset your password, the link will be valid for 6 hours:</p>
+                var resetUrl = $"{origin}/resetpassword?PasswordResetToken={account.ResetToken}";
+                message = $@"<p>Please use the below token to reset your password with the <code>/resetpassword</code> api route:</p>
                             <p><a href=""{resetUrl}"">{resetUrl}</a></p>";
             }
             else
@@ -200,5 +203,36 @@ namespace GrannysKitchen.API.Services
             var contentMessage = new Message(new string[] { "nutakki.shivaramakrishna99@gmail.com" }, "Sign-up Verification API - Reset Password", $@"<h4>Reset Password Email</h4>{message}");
             _emailSender.SendEmail(contentMessage, true);
         }
+        public void ResetPassword(ResetPasswordRequest model)
+        {
+            var resetPasswordToken = GetUserByResetToken(model.PasswordResetToken);
+            ChefUsers chefUser;
+            Users user;
+            if (resetPasswordToken != null && resetPasswordToken.IsChefUser)
+            {
+                chefUser = GetChefUserById(resetPasswordToken.UserId);
+                chefUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                chefUser.Password = model.Password;
+                _context.ChefUsers.Update(chefUser);
+            }
+            if (resetPasswordToken != null && !resetPasswordToken.IsChefUser)
+            {
+                user = GetById(resetPasswordToken.UserId);
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                user.Password = model.Password;
+                _context.Users.Update(user);
+            }
+            resetPasswordToken.IsActive = false;
+            resetPasswordToken.ModifiedDate = DateTime.UtcNow;
+            _context.ResetPasswordTokens.Update(resetPasswordToken);
+            _context.SaveChanges();
+        }
+        private ResetPasswordTokens GetUserByResetToken(string token)
+        {
+            var resetPasswordToken = _context.ResetPasswordTokens.AsNoTracking().FirstOrDefault(x =>
+                x.ResetToken == token && x.IsActive == true && x.ResetTokenExpires > DateTime.UtcNow);
+            return resetPasswordToken;
+        }
+
     }
 }

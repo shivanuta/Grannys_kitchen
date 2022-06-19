@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,13 +11,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NEST" Version="7.17.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GrannysKitchen.API\GrannysKitchen.API.csproj" />
-    <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
     <ProjectReference Include="..\GrannysKitchen.Models\GrannysKitchen.Models.csproj" />
   </ItemGroup>
 

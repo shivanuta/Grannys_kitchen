@@ -1,0 +1,38 @@
+﻿/* Necessary for full page carousel*/
+html,
+body,
+.view {
+    height: 100%;
+}
+
+/* Carousel*/
+.carousel,
+.carousel-item,
+.carousel-item.active {
+    height: 90% !important;
+}
+
+.carousel-inner {
+    height: 100% !important;
+}
+
+.carousel-item:nth-child(1) {
+    background-image: url("../images/pic1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.carousel-item:nth-child(2) {
+    background-image: url("../images/pic2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.carousel-item:nth-child(3) {
+    background-image: url("../images/pic3.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}

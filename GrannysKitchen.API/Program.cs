@@ -37,6 +37,7 @@ builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

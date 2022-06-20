@@ -18,15 +18,16 @@ namespace GrannysKitchen.Models.Data
             Configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            // connect to sql server database
-            options.UseSqlServer(Configuration.GetConnectionString("GrannysKitchen_APIContext"));
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //{
+        //     connect to sql server database
+        //    options.UseSqlServer(Configuration.GetConnectionString("GrannysKitchen_APIContext"));
+        //}
 
         public DbSet<Users> Users { get; set; }
         public DbSet<ChefUsers> ChefUsers { get; set; }
         public DbSet<ResetPasswordTokens> ResetPasswordTokens { get; set; }
+        public DbSet<Categories> Categories { get; set; }
     }
 }
 

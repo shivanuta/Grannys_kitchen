@@ -147,8 +147,8 @@ namespace GrannysKitchen.API.Services
         }
         public void ForgotPassword(ForgotPasswordRequest model, string origin)
         {
-            ChefUsers chefUser = new ChefUsers();
-            Users user = new Users();
+            ChefUsers chefUser = null;
+            Users user = null;
             if (model.IsChefUser)
             {
                 chefUser = _context.ChefUsers.SingleOrDefault(x => x.Email == model.Email);

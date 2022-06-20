@@ -10,6 +10,8 @@ namespace GrannysKitchen.Models.RequestModels
         public const string FileUploadFolder = "images\\categories\\";
         public const string RetriveFileFromFolder = "~/images/categories/";
         public const string DeleteFileFromFolder = "wwwroot\\Uploads\\";
+        public const string FoodFileUploadFolder = "images\\foodimages\\";
+        public const string FoodFileRetriveFromFolder = "~/images/foodimages/";
     }
 }
 

@@ -38,6 +38,7 @@ builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+builder.Services.AddScoped<IFoodItemsService, FoodItemsService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

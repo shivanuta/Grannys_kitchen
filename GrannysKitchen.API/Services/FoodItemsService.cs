@@ -8,21 +8,21 @@ using System.Net;
 
 namespace GrannysKitchen.API.Services
 {
-    public interface ICategoriesService
+    public interface IFoodItemsService
     {
-        List<Categories> GetAllCategories();
-        Categories GetCategoryById(int id);
-        Task<ApiResponseMessage> CreateCategory(CategoriesRequest categoriesRequest);
-        Task<ApiResponseMessage> EditCategory(CategoriesRequest categoriesRequest);
+        List<FoodItems> GetAllFoodItemsOfCurrentChef(int chefId);
+        FoodItems GetFoodItemById(int id);
+        Task<ApiResponseMessage> CreateFoodItem(FoodItemsRequest foodItemsRequest);
+        Task<ApiResponseMessage> EditFoodItem(FoodItemsRequest foodItemsRequest);
         Task<ApiResponseMessage> DeleteConfirmed(int id);
     }
-    public class CategoriesService : ICategoriesService
+    public class FoodItemsService : IFoodItemsService
     {
         private GrannysKitchenDbContext _context;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CategoriesService(
+        public FoodItemsService(
             GrannysKitchenDbContext context,
             IMapper mapper,
             IWebHostEnvironment webHostEnvironment)
@@ -32,68 +32,73 @@ namespace GrannysKitchen.API.Services
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public List<Categories> GetAllCategories()
+        public List<FoodItems> GetAllFoodItemsOfCurrentChef(int chefId)
         {
-            return _context.Categories.ToList();
+            return _context.FoodItems.Where(x => x.CreatedBy == chefId).ToList();
         }
 
-        public Categories GetCategoryById(int id)
+        public FoodItems GetFoodItemById(int id)
         {
-            return _context.Categories.AsNoTracking().FirstOrDefault(x => x.Id == id);
+            return _context.FoodItems.AsNoTracking().FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<ApiResponseMessage> CreateCategory(CategoriesRequest categoriesRequest)
+        public async Task<ApiResponseMessage> CreateFoodItem(FoodItemsRequest foodItemsRequest)
         {
             ApiResponseMessage apiResponseMessage = new ApiResponseMessage
             {
                 IsSuccess = false
             };
-            if (categoriesRequest != null)
+            if (foodItemsRequest != null)
             {
-                Categories category = new Categories
+                FoodItems foodItem = new FoodItems
                 {
-                    CategoryName = categoriesRequest.CategoryName,
-                    CategoryImage = categoriesRequest.ExistingImage,
-                    CreatedBy = categoriesRequest.CreatedBy,
+                    Name = foodItemsRequest.Name,
+                    Description = foodItemsRequest.Description,
+                    CategoryId = foodItemsRequest.CategoryId,
+                    FoodImage = foodItemsRequest.ExistingFoodImage,
+                    CreatedBy = foodItemsRequest.CreatedBy,
                     CreatedDate = DateTime.UtcNow
                 };
 
-                _context.Categories.Add(category);
+                _context.FoodItems.Add(foodItem);
                 await _context.SaveChangesAsync();
                 apiResponseMessage.IsSuccess = true;
                 apiResponseMessage.ResponseMesssage = new HttpResponseMessage() { StatusCode = HttpStatusCode.OK };
-                apiResponseMessage.SuccessMessage = "Category Saved Successfully...";
+                apiResponseMessage.SuccessMessage = "FoodItem Saved Successfully...";
                 return apiResponseMessage;
             }
             return apiResponseMessage;
         }
 
-        public async Task<ApiResponseMessage> EditCategory(CategoriesRequest categoriesRequest)
+
+        public async Task<ApiResponseMessage> EditFoodItem(FoodItemsRequest foodItemsRequest)
         {
             ApiResponseMessage apiResponseMessage = new ApiResponseMessage
             {
                 IsSuccess = false
             };
-            if (categoriesRequest != null)
+            if (foodItemsRequest != null)
             {
-                var categoryObject = GetCategoryById(categoriesRequest.Id);
-                Categories category = new Categories
+                var foodItemObject = GetFoodItemById(foodItemsRequest.Id);
+                FoodItems foodItem = new FoodItems
                 {
-                    Id = categoriesRequest.Id,
-                    CategoryName = categoriesRequest.CategoryName,
-                    CategoryImage = categoriesRequest.ExistingImage,
-                    ModifiedBy = categoriesRequest.ModifiedBy,
+                    Id = foodItemsRequest.Id,
+                    Name = foodItemsRequest.Name,
+                    FoodImage = foodItemsRequest.ExistingFoodImage,
+                    Description = foodItemsRequest.Description,
+                    CategoryId = foodItemsRequest.CategoryId,
+                    ModifiedBy = foodItemsRequest.ModifiedBy,
                     ModifiedDate = DateTime.UtcNow,
-                    CreatedBy = categoryObject.CreatedBy,
-                    CreatedDate = categoryObject.CreatedDate,
-                    IsActive = categoryObject.IsActive
+                    CreatedBy = foodItemObject.CreatedBy,
+                    CreatedDate = foodItemObject.CreatedDate,
+                    IsActive = foodItemObject.IsActive
                 };
 
-                _context.Categories.Update(category);
+                _context.FoodItems.Update(foodItem);
                 await _context.SaveChangesAsync();
                 apiResponseMessage.IsSuccess = true;
                 apiResponseMessage.ResponseMesssage = new HttpResponseMessage() { StatusCode = HttpStatusCode.OK };
-                apiResponseMessage.SuccessMessage = "Category Updated Successfully...";
+                apiResponseMessage.SuccessMessage = "FoodItem Updated Successfully...";
                 return apiResponseMessage;
             }
             return apiResponseMessage;
@@ -107,14 +112,15 @@ namespace GrannysKitchen.API.Services
             };
             if (id != 0)
             {
-                var category = GetCategoryById(id);
-                _context.Categories.Remove(category);
+                var item = GetFoodItemById(id);
+                _context.FoodItems.Remove(item);
                 await _context.SaveChangesAsync();
                 apiResponseMessage.IsSuccess = true;
                 apiResponseMessage.ResponseMesssage = new HttpResponseMessage() { StatusCode = HttpStatusCode.OK };
-                apiResponseMessage.SuccessMessage = "Category Deleted Successfully...";
+                apiResponseMessage.SuccessMessage = "FoodItem Deleted Successfully...";
             }
             return apiResponseMessage;
         }
+
     }
 }

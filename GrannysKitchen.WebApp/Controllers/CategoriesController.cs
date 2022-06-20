@@ -133,7 +133,7 @@ namespace GrannysKitchen.WebApp.Controllers
                     {
                         ModelState.Clear();
                         ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
-                        return View("Create", categoriesRequest);
+                        return View("Edit", categoriesRequest);
                     }
                 }
             }

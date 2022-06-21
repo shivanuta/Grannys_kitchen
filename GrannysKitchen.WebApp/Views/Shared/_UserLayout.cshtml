@@ -15,6 +15,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATcZurbtVKO3bRlquWYET3j4LKLxfjZcc"></script>
 </head>
 <body>
@@ -40,17 +41,20 @@
                         @{
                             if (isChef.HasValue && isChef.Value == 1)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Home</a>
-                                </li>
+                                //<li class="nav-item">
+                                //    <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Home</a>
+                                //</li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="">Food Items</a>
+                                    <a class="nav-link" asp-area="" asp-controller="FoodItems" asp-action="Index">Food Items</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="">Chef Menu</a>
+                                    <a class="nav-link" asp-area="" asp-controller="ChefMenu" asp-action="Index">Chef Menu</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="">Payments</a>
                                 </li>
                             }
                             else
@@ -59,10 +63,10 @@
                                     <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Privacy">My Orders</a>
+                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Privacy">Contact Us</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Contact Us</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">My Orders</a>
                                 </li>
                             }
                         }

@@ -1,4 +1,33 @@
 ﻿@{
     Layout = "_UserLayout";
 }
-<h1>Welcome User</h1>
+@*<h3 class="text-center text-uppercase mt-3 mb-3">Just Eat</h3>*@
+@using System;
+@model IEnumerable<GrannysKitchen.Models.DBModels.Categories>
+<link rel="stylesheet" href="~/css/foodItemsList.css" />
+<div class="container mt-3">
+    <div class="row" id="">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 col-sm-6">
+                <div class="product-grid4 h-100 card">
+                    <div class="product-image4">
+                        <a href="#">
+                            <img class="pic-1" src="~/images/categories/@item.CategoryImage">
+                            <img class="pic-2" src="~/images/categories/@item.CategoryImage">
+                        </a>
+                        <ul class="social">
+                            <li><a href="@Url.Action("Index", "Cart")" data-tip="View Items"><i class="fa fa-eye"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product-content mt-2">
+                        <h3 class="title">@item.CategoryName</h3>
+                        <a class="add-to-cart" href="@Url.Action("CategoryWiseFood", "FoodItems", new { id = @item.Id })">View Items</a>
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+</div>
+<hr>

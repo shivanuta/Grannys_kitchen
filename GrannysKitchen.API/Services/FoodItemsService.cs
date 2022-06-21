@@ -15,6 +15,7 @@ namespace GrannysKitchen.API.Services
         Task<ApiResponseMessage> CreateFoodItem(FoodItemsRequest foodItemsRequest);
         Task<ApiResponseMessage> EditFoodItem(FoodItemsRequest foodItemsRequest);
         Task<ApiResponseMessage> DeleteConfirmed(int id);
+        List<FoodItems> GetAllFoodItemsByCategory(int categoryId);
     }
     public class FoodItemsService : IFoodItemsService
     {
@@ -39,7 +40,7 @@ namespace GrannysKitchen.API.Services
 
         public FoodItems GetFoodItemById(int id)
         {
-            return _context.FoodItems.AsNoTracking().FirstOrDefault(x => x.Id == id);
+            return _context.FoodItems.Include(x => x.Categories).AsNoTracking().FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<ApiResponseMessage> CreateFoodItem(FoodItemsRequest foodItemsRequest)
@@ -121,6 +122,11 @@ namespace GrannysKitchen.API.Services
             }
             return apiResponseMessage;
         }
+        public List<FoodItems> GetAllFoodItemsByCategory(int categoryId)
+        {
+            return _context.FoodItems.Where(x => x.CategoryId == categoryId).ToList();
+        }
+
 
     }
 }

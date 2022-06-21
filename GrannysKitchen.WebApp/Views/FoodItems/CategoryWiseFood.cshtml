@@ -1,0 +1,139 @@
+﻿@{
+    Layout = "_UserLayout";
+}
+@using System;
+@model IEnumerable<GrannysKitchen.Models.DBModels.FoodItems>
+<link rel="stylesheet" href="~/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="~/css/foodItemsList.css" />
+<style>
+    .checked {
+        color: orange;
+    }
+     .badge-notify {
+        background: red;
+        position: relative;
+        top: -20px;
+        right: 10px;
+    }
+    .my-cart-icon-affix {
+        position: fixed;
+        z-index: 999;
+    }
+    .mr-auto, .mx-auto {
+        margin-right: auto !important;
+        margin-left: 760px;
+    }
+    .modal-header {
+        display: inline !important;
+    }
+    style attribute {
+    color: green !important;
+}
+</style>
+<div class="container">
+    <div class="page-header">
+        <h1>
+            Food Items List
+            <div style="float: right; cursor: pointer;">
+                <span class="glyphicon glyphicon-shopping-cart my-cart-icon"><span class="badge badge-notify my-cart-badge"></span></span>
+            </div>
+        </h1>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 col-sm-6">
+                <div class="product-grid4 h-100 card">
+                    <div class="product-image4">
+                        <a href="#">
+                            <img class="pic-1" src="~/images/foodimages/@item.FoodImage">
+                            <img class="pic-2" src="~/images/foodimages/@item.FoodImage">
+                        </a>
+                        <ul class="social">
+                            <li><a class="my-cart-btn" data-tip="Add to Cart" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price="100" data-quantity="1" data-image='/images/foodimages/@item.FoodImage'><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                        <span class="product-discount-label">-10%</span>
+                    </div>
+                    <div class="product-content mt-2">
+                        <h3 class="title">@item.Name</h3>
+                        <h4 class="title">(By Chef: <b>Test Chef</b>)</h4>
+                        <div class="price">
+                            $90
+                            <span>$100</span>
+                        </div>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <button class="btn btn-danger my-cart-btn" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price="100" data-quantity="1" data-image='/images/foodimages/@item.FoodImage'>Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <script src="~/js/jquery-2.2.3.min.js"></script>
+    <script type='text/javascript' src="~/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="~/js/jquery.mycart.js"></script>
+    <script type="text/javascript">
+        $(function () {
+          var goToCartIcon = function($addTocartBtn){
+            var $cartIcon = $(".my-cart-icon");
+            var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+            $addTocartBtn.prepend($image);
+            var position = $cartIcon.position();
+            $image.animate({
+              top: position.top,
+              left: position.left
+            }, 500 , "linear", function() {
+              $image.remove();
+            });
+          }
+          $('.my-cart-btn').myCart({
+            currencySymbol: '$',
+            classCartIcon: 'my-cart-icon',
+            classCartBadge: 'my-cart-badge',
+            classProductQuantity: 'my-product-quantity',
+            classProductRemove: 'my-product-remove',
+            classCheckoutCart: 'my-cart-checkout',
+            affixCartIcon: true,
+            showCheckoutModal: true,
+            numberOfDecimals: 2,
+            cartItems: [],
+            clickOnAddToCart: function($addTocart){
+              goToCartIcon($addTocart);
+            },
+            afterAddOnCart: function(products, totalPrice, totalQuantity) {
+              console.log("afterAddOnCart", products, totalPrice, totalQuantity);
+            },
+            clickOnCartIcon: function($cartIcon, products, totalPrice, totalQuantity) {
+              console.log("cart icon clicked", $cartIcon, products, totalPrice, totalQuantity);
+            },
+            checkoutCart: function(products, totalPrice, totalQuantity) {
+              var priceAfterDiscount = this.getDiscountPrice(products, totalPrice, totalQuantity);
+              gotoCheckout(products, totalPrice, totalQuantity, priceAfterDiscount);
+            },
+            getDiscountPrice: function(products, totalPrice, totalQuantity) {
+              console.log("calculating discount", products, totalPrice, totalQuantity);
+              return (totalPrice - (totalPrice * 0.1));
+            }
+          });
+        });
+        function gotoCheckout(products, totalPrice, totalQuantity, priceAfterDiscount){
+            alert(totalPrice);
+            $.ajax({  
+                   type: 'POST',  
+                   dataType: 'json',  
+                   url: '/Cart/TestCheckout',  
+                   data: {},  
+                   success: function (Data) {  
+                       alert("success")
+                   },  
+                   error: function (XMLHttpRequest, textStatus, errorThrown) {  
+                   }
+            });  
+        }
+    </script>
+</div>
+<hr>
+

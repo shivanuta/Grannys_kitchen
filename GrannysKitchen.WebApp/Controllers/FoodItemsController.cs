@@ -203,6 +203,11 @@ namespace GrannysKitchen.WebApp.Controllers
                 }
             }
         }
+        public async Task<IActionResult> CategoryWiseFood(int id)
+        {
+            var foodItems = await GetAllFoodItemsByCategory(id);
+            return View(foodItems);
+        }
 
         #region Private Methods
         private async Task<List<FoodItems>> GetAllFoodItems()
@@ -295,6 +300,30 @@ namespace GrannysKitchen.WebApp.Controllers
                 }
             }
         }
+        private async Task<List<FoodItems>> GetAllFoodItemsByCategory(int categoryId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var chefId = HttpContext.Session.GetInt32("UserId");
+                var token = HttpContext.Session.GetString("Token");
+                string endpoint = apiBaseUrl + "FoodItems/GetAllFoodItemsByCategoryId/" + categoryId;
+                client.DefaultRequestHeaders.Add("Authorization", token);
+                using (var Response = await client.GetAsync(endpoint))
+                {
+                    var apiResponse = await Response.Content.ReadAsStringAsync();
+                    var responseMessage = JsonConvert.DeserializeObject<List<FoodItems>>(apiResponse);
+                    if (responseMessage != null && responseMessage.Count() != 0 && Response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return responseMessage;
+                    }
+                    else
+                    {
+                        return new List<FoodItems>();
+                    }
+                }
+            }
+        }
+
         #endregion
 
     }

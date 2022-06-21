@@ -29,6 +29,7 @@ namespace GrannysKitchen.Models.Data
         public DbSet<ResetPasswordTokens> ResetPasswordTokens { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<FoodItems> FoodItems { get; set; }
+        public DbSet<ChefMenu> ChefMenu { get; set; }
     }
 }
 

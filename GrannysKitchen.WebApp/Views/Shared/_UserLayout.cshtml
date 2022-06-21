@@ -15,7 +15,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATcZurbtVKO3bRlquWYET3j4LKLxfjZcc"></script>
 </head>
 <body>
     <header>
@@ -56,10 +56,10 @@
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Home</a>
+                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Privacy">My Orders</a>
+                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Privacy">My Orders</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Contact Us</a>

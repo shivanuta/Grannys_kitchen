@@ -57,5 +57,11 @@ namespace GrannysKitchen.API.Controllers
             var response = await _foodItemsService.DeleteConfirmed(id);
             return Ok(response);
         }
+        [HttpGet("GetAllFoodItemsByCategoryId/{categoryId}")]
+        public IActionResult GetAllFoodItemsByCategoryId(int categoryId)
+        {
+            var response = _foodItemsService.GetAllFoodItemsByCategory(categoryId);
+            return Ok(response);
+        }
     }
 }

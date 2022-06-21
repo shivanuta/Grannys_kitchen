@@ -23,6 +23,11 @@ namespace GrannysKitchen.Models.DBModels
         [ForeignKey("Categories")]
         public int CategoryId { get; set; }
         public Categories Categories { get; set; }
+        public int TotalStock { get; set; }
+        public Nullable<int> AvailableStock { get; set; }
+        public decimal ActualPrice { get; set; }
+        public int DiscountPercentage { get; set; }
+        public Nullable<decimal> DeliveryCharges { get; set; }
 
         public bool IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }

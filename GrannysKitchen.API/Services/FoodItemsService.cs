@@ -58,7 +58,12 @@ namespace GrannysKitchen.API.Services
                     CategoryId = foodItemsRequest.CategoryId,
                     FoodImage = foodItemsRequest.ExistingFoodImage,
                     CreatedBy = foodItemsRequest.CreatedBy,
-                    CreatedDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow,
+                    ActualPrice = foodItemsRequest.ActualPrice,
+                    DiscountPercentage = foodItemsRequest.DiscountPercentage,
+                    TotalStock = foodItemsRequest.TotalStock,
+                    DeliveryCharges = foodItemsRequest.DeliveryCharges,
+                    AvailableStock = foodItemsRequest.TotalStock
                 };
 
                 _context.FoodItems.Add(foodItem);
@@ -92,7 +97,12 @@ namespace GrannysKitchen.API.Services
                     ModifiedDate = DateTime.UtcNow,
                     CreatedBy = foodItemObject.CreatedBy,
                     CreatedDate = foodItemObject.CreatedDate,
-                    IsActive = foodItemObject.IsActive
+                    IsActive = foodItemObject.IsActive,
+                    ActualPrice = foodItemsRequest.ActualPrice,
+                    DiscountPercentage = foodItemsRequest.DiscountPercentage,
+                    TotalStock = foodItemsRequest.TotalStock,
+                    DeliveryCharges = foodItemsRequest.DeliveryCharges,
+                    AvailableStock = foodItemsRequest.TotalStock
                 };
 
                 _context.FoodItems.Update(foodItem);

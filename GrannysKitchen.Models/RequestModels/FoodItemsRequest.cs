@@ -21,6 +21,11 @@ namespace GrannysKitchen.Models.RequestModels
         [Display(Name = "Category Image")]
         public IFormFile FoodImage { get; set; }
         public int CategoryId { get; set; }
+        public int TotalStock { get; set; }
+        public Nullable<int> AvailableStock { get; set; }
+        public decimal ActualPrice { get; set; }
+        public int DiscountPercentage { get; set; }
+        public Nullable<decimal> DeliveryCharges { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<DateTime> CreatedDate { get; set; }

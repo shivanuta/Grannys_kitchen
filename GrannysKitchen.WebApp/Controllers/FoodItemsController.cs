@@ -50,7 +50,11 @@ namespace GrannysKitchen.WebApp.Controllers
                 Name = foodItem.Name,
                 Description = foodItem.Description,
                 ExistingFoodImage = foodItem.FoodImage,
-                CategoryId = foodItem.CategoryId
+                CategoryId = foodItem.CategoryId,
+                ActualPrice = foodItem.ActualPrice,
+                DeliveryCharges = foodItem.DeliveryCharges,
+                TotalStock = foodItem.TotalStock,
+                DiscountPercentage = foodItem.DiscountPercentage
             };
 
             if (foodItem == null)
@@ -133,7 +137,10 @@ namespace GrannysKitchen.WebApp.Controllers
                 multipartContent.Add(new StringContent(foodItemsRequest.Description), "Description");
                 multipartContent.Add(new StringContent(foodItemsRequest.ExistingFoodImage), "ExistingFoodImage");
                 multipartContent.Add(new StreamContent(foodItemsRequest.FoodImage.OpenReadStream()), "FoodImage", foodItemsRequest.FoodImage.FileName);
-
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.ActualPrice)), "ActualPrice");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.TotalStock)), "TotalStock");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.DeliveryCharges)), "DeliveryCharges");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.DiscountPercentage)), "DiscountPercentage");
                 string endpoint = apiBaseUrl + "FoodItems/SaveFoodItem";
                 client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("Token"));
                 using (var Response = await client.PostAsync(endpoint, multipartContent))
@@ -180,6 +187,10 @@ namespace GrannysKitchen.WebApp.Controllers
                 multipartContent.Add(new StringContent(foodItemsRequest.Description), "Description");
                 multipartContent.Add(new StringContent(foodItemsRequest.ExistingFoodImage), "ExistingFoodImage");
                 multipartContent.Add(new StreamContent(foodItemsRequest.FoodImage.OpenReadStream()), "FoodImage", foodItemsRequest.FoodImage.FileName);
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.ActualPrice)), "ActualPrice");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.TotalStock)), "TotalStock");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.DeliveryCharges)), "DeliveryCharges");
+                multipartContent.Add(new StringContent(JsonConvert.SerializeObject(foodItemsRequest.DiscountPercentage)), "DiscountPercentage");
 
                 string endpoint = apiBaseUrl + "FoodItems/EditFoodItem";
                 client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("Token"));

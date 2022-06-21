@@ -1,5 +1,4 @@
 ﻿using GrannysKitchen.API.Services;
-
 namespace GrannysKitchen.API.Authorization
 {
     public class JwtMiddleware

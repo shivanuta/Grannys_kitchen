@@ -19,16 +19,14 @@
         position: fixed;
         z-index: 999;
     }
-    .mr-auto, .mx-auto {
-        margin-right: auto !important;
-        margin-left: 760px;
-    }
     .modal-header {
         display: inline !important;
     }
-    style attribute {
-    color: green !important;
-}
+    /*.mr-auto, .mx-auto {
+        margin-right: auto !important;
+        margin-left: 760px;
+    }
+    */
 </style>
 <div class="container">
     <div class="page-header">
@@ -50,10 +48,29 @@
                             <img class="pic-2" src="~/images/foodimages/@item.FoodImage">
                         </a>
                         <ul class="social">
-                            <li><a class="my-cart-btn" data-tip="Add to Cart" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price="100" data-quantity="1" data-image='/images/foodimages/@item.FoodImage'><i class="fa fa-shopping-cart"></i></a></li>
+                            <li><a class="my-cart-btn" data-tip="Add to Cart" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price='@item.ActualPrice' data-quantity="1" data-image='/images/foodimages/@item.FoodImage'><i class="fa fa-shopping-cart"></i></a></li>
                         </ul>
-                        <span class="product-discount-label">-10%</span>
+                        <span class="product-discount-label">-@item.DiscountPercentage%</span>
                     </div>
+                    <div class="product-content mt-2">
+                        <h3 class="title">@item.Name</h3>
+                        <h4 class="title">(By Chef: <b>Test Chef</b>)</h4>
+                        <div class="price">
+                            $@(item.ActualPrice - (item.ActualPrice * item.DiscountPercentage / 100))
+                            <span>$@item.ActualPrice</span>
+                        </div>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <button class="btn btn-danger my-cart-btn" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price='@item.ActualPrice' data-quantity="1" data-image='/images/foodimages/@item.FoodImage'>Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+           <div>
+                        <span class="product-discount-label">-10%</span>
+                    <div>
                     <div class="product-content mt-2">
                         <h3 class="title">@item.Name</h3>
                         <h4 class="title">(By Chef: <b>Test Chef</b>)</h4>

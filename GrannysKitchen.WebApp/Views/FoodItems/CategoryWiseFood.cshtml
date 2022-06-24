@@ -48,7 +48,7 @@
                             <img class="pic-2" src="~/images/foodimages/@item.FoodImage">
                         </a>
                         <ul class="social">
-                            <li><a class="my-cart-btn" data-tip="Add to Cart" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price='@item.ActualPrice' data-quantity="1" data-image='/images/foodimages/@item.FoodImage'><i class="fa fa-shopping-cart"></i></a></li>
+                            <li><a class="my-cart-btn" data-tip="Add to Cart" data-id="@item.Id" data-name='@item.Name' data-summary='@item.Description' data-price='@item.ActualPrice' data-quantity="1" data-image='/images/foodimages/@item.FoodImage'><i class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                         <span class="product-discount-label">-@item.DiscountPercentage%</span>
                     </div>
@@ -69,6 +69,8 @@
                 </div>
             </div>
            <div>
+         <div>
+
                         <span class="product-discount-label">-10%</span>
                     <div>
                     <div class="product-content mt-2">
@@ -83,8 +85,9 @@
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star"></span>
                         <span class="fa fa-star"></span>
-                        <button class="btn btn-danger my-cart-btn" data-id="@item.Id" data-name='@item.Name' data-summary="summary 1" data-price="100" data-quantity="1" data-image='/images/foodimages/@item.FoodImage'>Add to Cart</button>
+                        <button class="btn btn-danger my-cart-btn" data-id="@item.Id" data-name='@item.Name' data-summary='@item.Description' data-price='@item.ActualPrice' data-quantity="1" data-image='/images/foodimages/@item.FoodImage'>Add to Cart</button>
                     </div>
+                    </div><input type="hidden" value='@item.DiscountPercentage' id='txtDiscountPercentage-@item.Id.ToString()' />
                 </div>
             </div>
         }
@@ -94,7 +97,8 @@
     <script type='text/javascript' src="~/js/jquery.mycart.js"></script>
     <script type="text/javascript">
         $(function () {
-          var goToCartIcon = function($addTocartBtn){
+           var discountPrice = 0;
+           var goToCartIcon = function($addTocartBtn){
             var $cartIcon = $(".my-cart-icon");
             var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
             $addTocartBtn.prepend($image);
@@ -131,20 +135,33 @@
               gotoCheckout(products, totalPrice, totalQuantity, priceAfterDiscount);
             },
             getDiscountPrice: function(products, totalPrice, totalQuantity) {
-              console.log("calculating discount", products, totalPrice, totalQuantity);
-              return (totalPrice - (totalPrice * 0.1));
+              console.log("products", products);
+              
+              if(discountPrice === 0){
+                  $.each(products, function(key,val) {
+                    console.log(val);
+                    var discountPercentage = parseInt($('#txtDiscountPercentage-'+val.id).val())/100;
+                    discountPrice += (val.price - (val.price * discountPercentage)) * val.quantity;
+                  });
+              }
+              return discountPrice;
             }
           });
         });
         function gotoCheckout(products, totalPrice, totalQuantity, priceAfterDiscount){
-            alert(totalPrice);
+            alert(priceAfterDiscount);
             $.ajax({  
                    type: 'POST',  
                    dataType: 'json',  
-                   url: '/Cart/TestCheckout',  
-                   data: {},  
+                   url: '/Cart/SaveOrder',
+                   data: {
+                       FoodItemRequest: products,
+                       TotalPrice: totalPrice,
+                       TotalQuantity: totalQuantity,
+                       PriceAfterDiscount: priceAfterDiscount
+                   },  
                    success: function (Data) {  
-                       alert("success")
+                       alert("Order Placed Successfully....")
                    },  
                    error: function (XMLHttpRequest, textStatus, errorThrown) {  
                    }

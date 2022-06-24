@@ -5,6 +5,7 @@ using GrannysKitchen.WebApp.Authorization;
 using GrannysKitchen.WebApp.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 namespace GrannysKitchen.WebApp.Controllers
 {
     [Authorize]
@@ -19,10 +20,10 @@ namespace GrannysKitchen.WebApp.Controllers
             _Configure = configuration;
             apiBaseUrl = _Configure.GetValue<string>("WebAPIBaseUrl");
         }
-        public IActionResult TestCheckout()
-        {
-            return Ok();
-        }
+        //public IActionResult OrderSummary(OrderSummary orderSummary)
+        //{
+        //    return Ok();
+        //}
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItems>>(HttpContext.Session, "cart");
@@ -67,6 +68,35 @@ namespace GrannysKitchen.WebApp.Controllers
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> SaveOrder(OrderSummary orderSummary)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var token = HttpContext.Session.GetString("Token");
+                client.DefaultRequestHeaders.Add("Authorization", token);
+                orderSummary.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                StringContent content = new StringContent(JsonConvert.SerializeObject(orderSummary), Encoding.UTF8, "application/json");
+                string endpoint = apiBaseUrl + "Orders/SaveOrderDetails";
+                using (var Response = await client.PostAsync(endpoint, content))
+                {
+                    var apiResponse = await Response.Content.ReadAsStringAsync();
+                    var responseMessage = JsonConvert.DeserializeObject<ApiResponseMessage>(apiResponse);
+                    return Ok(responseMessage);
+                    //if (responseMessage != null && responseMessage.IsSuccess && Response.StatusCode == System.Net.HttpStatusCode.OK)
+                    //{
+                    //    ModelState.Clear();
+                    //    TempData["Message"] = responseMessage.SuccessMessage;
+                    //    return RedirectToAction("Index");
+                    //}
+                    //else
+                    //{
+                    //    ModelState.Clear();
+                    //    ModelState.AddModelError(string.Empty, responseMessage.ErrorMessage);
+                    //    return View("Index", orderSummary);
+                    //}
+                }
+            }
         }
         private int isExist(int id)
         {

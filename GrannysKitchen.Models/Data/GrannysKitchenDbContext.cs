@@ -1,4 +1,5 @@
 ﻿using GrannysKitchen.Models.DBModels;
+using GrannysKitchen.Models.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -30,6 +31,7 @@ namespace GrannysKitchen.Models.Data
         public DbSet<Categories> Categories { get; set; }
         public DbSet<FoodItems> FoodItems { get; set; }
         public DbSet<ChefMenu> ChefMenu { get; set; }
+        public DbSet<Orders> Orders { get; set; }
     }
 }
 

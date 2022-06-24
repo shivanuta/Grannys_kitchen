@@ -4,6 +4,7 @@ using GrannysKitchen.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GrannysKitchen.Models.Migrations
 {
     [DbContext(typeof(GrannysKitchenDbContext))]
-    partial class GrannysKitchenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220624185945_orders_table")]
+    partial class orders_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
